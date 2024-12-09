@@ -1,0 +1,178 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+const EnvelopeAnimation = () => {
+  const [isOpened, setIsOpened] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [numPersons, setNumPersons] = useState("");
+
+  const handleEnvelopeClick = () => {
+    setIsOpened(true);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const participants = JSON.parse(localStorage.getItem("participants")) || [];
+    const timestamp = new Date().toLocaleString();
+    participants.push({ name, phone, numPersons, timestamp });
+    localStorage.setItem("participants", JSON.stringify(participants));
+    setIsSubmitted(true);
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "#f8f8f8",
+        padding: "20px",
+        textAlign: "center",
+      }}
+    >
+      {!isOpened && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            marginBottom: "20px",
+            fontSize: "18px",
+            fontWeight: "bold",
+            color: "#555",
+            lineHeight: "1.4",
+          }}
+        >
+          Tryk på brevet
+        </motion.p>
+      )}
+      {!isOpened ? (
+        <motion.img
+          src="envelope.png"
+          alt="Envelope"
+          style={{
+            width: "90%",
+            maxWidth: "300px",
+            cursor: "pointer",
+          }}
+          initial={{ scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleEnvelopeClick}
+          transition={{ type: "spring", stiffness: 300 }}
+        />
+      ) : (
+        <>
+          <motion.img
+            src="Invitation.png"
+            alt="Invitation"
+            style={{
+              width: "90%",
+              maxWidth: "400px",
+              border: "2px solid #000",
+              borderRadius: "10px",
+              marginBottom: "20px",
+            }}
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+          {!isSubmitted ? (
+            <form
+              onSubmit={handleFormSubmit}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "15px",
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Navn"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{
+                  padding: "10px",
+                  width: "90%",
+                  maxWidth: "300px",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                }}
+                required
+              />
+              <input
+                type="tel"
+                placeholder="Telefonnummer"
+                value={phone}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,8}$/.test(value)) {
+                    setPhone(value);
+                  }
+                }}
+                style={{
+                  padding: "10px",
+                  width: "90%",
+                  maxWidth: "300px",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                }}
+                required
+              />
+              <input
+                type="number"
+                placeholder="Antal personer"
+                value={numPersons}
+                onChange={(e) => setNumPersons(e.target.value)}
+                style={{
+                  padding: "10px",
+                  width: "90%",
+                  maxWidth: "300px",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                }}
+                required
+              />
+              <button
+                type="submit"
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  backgroundColor: "#28a745",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Tilmeld
+              </button>
+            </form>
+          ) : (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                marginTop: "20px",
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: "#28a745",
+              }}
+            >
+              Du er tilmeldt! Tak for din tilmelding.
+            </motion.p>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default EnvelopeAnimation;
