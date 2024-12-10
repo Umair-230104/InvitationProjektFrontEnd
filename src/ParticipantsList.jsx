@@ -44,6 +44,7 @@ const ParticipantsList = () => {
               <th style={{ border: "1px solid #ccc", padding: "10px" }}>Navn</th>
               <th style={{ border: "1px solid #ccc", padding: "10px" }}>Telefonnummer</th>
               <th style={{ border: "1px solid #ccc", padding: "10px" }}>Antal Personer</th>
+              <th style={{ border: "1px solid #ccc", padding: "10px" }}>Tilmeldt</th> {/* New column */}
             </tr>
           </thead>
           <tbody>
@@ -52,6 +53,9 @@ const ParticipantsList = () => {
                 <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.name}</td>
                 <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.phoneNumber}</td>
                 <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.people}</td>
+                <td style={{ border: "1px solid #ccc", padding: "10px" }}>
+                  {new Date(participant.createdAt).toLocaleString("da-DK")} {/* Format timestamp */}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -59,6 +63,7 @@ const ParticipantsList = () => {
       )}
     </div>
   );
+  
 };
 
 export default ParticipantsList;

@@ -15,10 +15,20 @@ const EnvelopeAnimation = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
   
+    // Format the date to match `java.time.LocalDateTime` (yyyy-MM-dd HH:mm:ss)
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
+      now.getDate()
+    ).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(
+      2,
+      '0'
+    )}:${String(now.getSeconds()).padStart(2, '0')}`;
+  
     const newParticipant = {
       name,
-      phoneNumber: phone, // Ensure this matches the API's expected field name
-      people: parseInt(numPersons, 10), // Ensure it's sent as a number
+      phoneNumber: phone,
+      people: parseInt(numPersons, 10),
+      createdAt: formattedDate, // Correctly formatted timestamp
     };
   
     console.log("Payload:", newParticipant);
@@ -43,6 +53,9 @@ const EnvelopeAnimation = () => {
       console.error("Error submitting form:", error);
     }
   };
+  
+  
+  
   
 
   return (
