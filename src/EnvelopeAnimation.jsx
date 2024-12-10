@@ -12,14 +12,38 @@ const EnvelopeAnimation = () => {
     setIsOpened(true);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const participants = JSON.parse(localStorage.getItem("participants")) || [];
-    const timestamp = new Date().toLocaleString();
-    participants.push({ name, phone, numPersons, timestamp });
-    localStorage.setItem("participants", JSON.stringify(participants));
-    setIsSubmitted(true);
+  
+    const newParticipant = {
+      name,
+      phoneNumber: phone, // Ensure this matches the API's expected field name
+      people: parseInt(numPersons, 10), // Ensure it's sent as a number
+    };
+  
+    console.log("Payload:", newParticipant);
+  
+    try {
+      const response = await fetch("https://invitationapi.ut-cphb.dk/api/v1/invitations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newParticipant),
+      });
+  
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error("Response error details:", errorDetails);
+        throw new Error("Failed to submit the form");
+      }
+  
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
+  
 
   return (
     <div
