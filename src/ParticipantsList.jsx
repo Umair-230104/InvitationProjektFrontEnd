@@ -20,6 +20,8 @@ const ParticipantsList = () => {
     fetchParticipants();
   }, []);
 
+  const totalGuests = participants.reduce((sum, participant) => sum + participant.people, 0);
+
   return (
     <div
       style={{
@@ -27,7 +29,29 @@ const ParticipantsList = () => {
         textAlign: "center",
       }}
     >
-      <h2>Deltagerliste</h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h2>Deltagerliste</h2>
+        <div
+          style={{
+            border: "1px solid #ccc",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            backgroundColor: "#f9f9f9",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <p style={{ margin: 0, fontWeight: "bold" }}>Totale Gæster:</p>
+          <p style={{ margin: 0, fontSize: "18px" }}>{totalGuests}</p>
+        </div>
+      </div>
+
       {participants.length === 0 ? (
         <p>Ingen deltagere endnu.</p>
       ) : (
@@ -39,31 +63,31 @@ const ParticipantsList = () => {
             maxWidth: "600px",
           }}
         >
-          <thead>
-            <tr>
-              <th style={{ border: "1px solid #ccc", padding: "10px" }}>Navn</th>
-              <th style={{ border: "1px solid #ccc", padding: "10px" }}>Telefonnummer</th>
-              <th style={{ border: "1px solid #ccc", padding: "10px" }}>Antal Personer</th>
-              <th style={{ border: "1px solid #ccc", padding: "10px" }}>Tilmeldt</th> {/* New column */}
-            </tr>
-          </thead>
-          <tbody>
-            {participants.map((participant) => (
-              <tr key={participant.id}>
-                <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.name}</td>
-                <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.phoneNumber}</td>
-                <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.people}</td>
-                <td style={{ border: "1px solid #ccc", padding: "10px" }}>
-                  {new Date(participant.createdAt).toLocaleString("da-DK")} {/* Format timestamp */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+       <thead>
+  <tr>
+    <th style={{ border: "1px solid #ccc", padding: "10px" }}>Navn</th>
+    <th style={{ border: "1px solid #ccc", padding: "10px" }}>Telefonnummer</th>
+    <th style={{ border: "1px solid #ccc", padding: "10px" }}>Antal Personer</th>
+    <th style={{ border: "1px solid #ccc", padding: "10px" }}>Tilmeldt</th>
+  </tr>
+</thead>
+<tbody>
+  {participants.map((participant) => (
+    <tr key={participant.id}>
+      <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.name}</td>
+      <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.phoneNumber}</td>
+      <td style={{ border: "1px solid #ccc", padding: "10px" }}>{participant.people}</td>
+      <td style={{ border: "1px solid #ccc", padding: "10px" }}>
+        {new Date(participant.createdAt).toLocaleString("da-DK")}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       )}
     </div>
   );
-  
 };
 
 export default ParticipantsList;
