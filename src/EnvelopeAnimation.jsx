@@ -14,25 +14,25 @@ const EnvelopeAnimation = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Format the date to match `java.time.LocalDateTime` (yyyy-MM-dd HH:mm:ss)
     const now = new Date();
-    const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
+    const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
       now.getDate()
-    ).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(
+    ).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(
       2,
-      '0'
-    )}:${String(now.getSeconds()).padStart(2, '0')}`;
-  
+      "0"
+    )}:${String(now.getSeconds()).padStart(2, "0")}`;
+
     const newParticipant = {
       name,
       phoneNumber: phone,
       people: parseInt(numPersons, 10),
       createdAt: formattedDate, // Correctly formatted timestamp
     };
-  
+
     console.log("Payload:", newParticipant);
-  
+
     try {
       const response = await fetch("https://invitationapi.ut-cphb.dk/api/v1/invitations", {
         method: "POST",
@@ -41,22 +41,18 @@ const EnvelopeAnimation = () => {
         },
         body: JSON.stringify(newParticipant),
       });
-  
+
       if (!response.ok) {
         const errorDetails = await response.json();
         console.error("Response error details:", errorDetails);
         throw new Error("Failed to submit the form");
       }
-  
+
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
-  
-  
-  
-  
 
   return (
     <div
@@ -206,6 +202,25 @@ const EnvelopeAnimation = () => {
               Du er tilmeldt! Tak for din tilmelding.
             </motion.p>
           )}
+          <a
+            href="https://onskeskyen.dk/s/duxpkn"
+            style={{
+              display: "inline-block",
+              marginTop: "20px",
+              padding: "10px 20px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              textDecoration: "none",
+              color: "#fff",
+              backgroundColor: "#007bff",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Se min ønskeliste her
+          </a>
         </>
       )}
     </div>
